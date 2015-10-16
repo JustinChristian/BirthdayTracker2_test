@@ -16,11 +16,11 @@ public class Birthday
         Dislikes = new ArrayList<>();
     }
     
-    public Birthday (String name, int month, int day, List<String> likes, List<String> dislikes)
+    public Birthday (String name, int day, int month, List<String> likes, List<String> dislikes)
     {
         Name = name;
-        Month = month;
         Day = day;
+        Month = month;
         Likes = likes;
         Dislikes = dislikes;
     }
@@ -89,22 +89,6 @@ public class Birthday
     //Properties </editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Methods">
-    public boolean validDate(int month, int day)
-    {
-        boolean valid = false;
-        int[] calendar = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        
-        if (month > 0 && month < 13)
-        {
-            if (day > 0 && day <= calendar[month - 1])
-            {
-                valid = true;
-            }
-        }
-        
-        return valid;
-    }
-    
     @Override
     public String toString()
     {

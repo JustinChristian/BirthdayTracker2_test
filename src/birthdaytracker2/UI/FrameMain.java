@@ -679,7 +679,7 @@ public class FrameMain extends JFrame
             @Override
             public void actionPerformed(ActionEvent actionEvent)
             {
-                clear();
+                clearTextFields();
             }
         });
         
@@ -858,6 +858,7 @@ public class FrameMain extends JFrame
     
     private void newEntry()
     {
+        clearTextFields();
         changePanel();
     }
     
@@ -876,12 +877,12 @@ public class FrameMain extends JFrame
             }
             else
             {
-                informationFail("Select one row.", 3000);
+                informationFail("Select one row.", 2000);
             }
         }
         else
         {
-            informationFail("No data!", 3000);
+            informationFail("No data!", 2000);
         }
     }
     
@@ -897,7 +898,7 @@ public class FrameMain extends JFrame
             node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), name);
         }
         
-        ((DefaultTableModel) tableBirthdays.getModel()).setDataVector(Main.data.getData(), columns);
+        updateTable();
         
         Main.data.currentBirthdays = Main.data.nameTree(Main.data.currentBirthdays.traverse());
     }
@@ -916,7 +917,7 @@ public class FrameMain extends JFrame
             node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), Integer.toString(month));
         }
         
-        ((DefaultTableModel) tableBirthdays.getModel()).setDataVector(Main.data.getData(), columns);// Nope, birthdaystogrid fucking bullshit do it
+        updateTable();
         
         Main.data.currentBirthdays = Main.data.nameTree(Main.data.currentBirthdays.traverse());
     }
@@ -933,7 +934,7 @@ public class FrameMain extends JFrame
         informationSuccess("Program reset.", 2000);
     }
     
-    private void clear()
+    private void clearTextFields()
     {
         textfieldName.setText("");
         textfieldDate.setText("");
@@ -950,20 +951,42 @@ public class FrameMain extends JFrame
         
         if (name != null && !name.equals(""))
         {
-            if (date != null && !date.equals(""))
+            if (date != null)
             {
-                String[] dateSplit = date.split("/");
-                int day = Integer.parseInt(dateSplit[0]);
-                int month = Integer.parseInt(dateSplit[1]);
+                int day = 999; // Deliberately invalid values,
+                int month = 999; // in case try issue.
                 
-                if (Main.data.focusBirthday == null)
+                try
                 {
-                    Main.data.saveBirthday(new Birthday(name, day, month, likes, dislikes));
+                    String[] dateSplit = date.split("/");
+                    day =Integer.parseInt(dateSplit[0]);
+                    month = Integer.parseInt(dateSplit[1]);
                 }
-                else
+                catch (Exception exception)
                 {
-                    Main.data.updateBirthday(new Birthday(name, day, month, likes, dislikes));
+                    informationFail("Invalid date.", 2000);
                 }
+
+                    if (new Common().validDate(day, month))
+                    {
+                         if (Main.data.focusBirthday == null)
+                        {
+                            Main.data.saveBirthday(new Birthday(name, day, month, likes, dislikes));
+                        }
+                        else
+                        {
+                            Main.data.updateBirthday(new Birthday(name, day, month, likes, dislikes));
+                        }
+
+                        updateTable();
+                        changePanel();
+                        clearTextFields();
+                        informationSuccess("Entry saved!", 2000);
+                    }
+                    else
+                    {
+                        informationFail("Invalid date.", 2000);
+                    }
             }
         }
         else
@@ -1040,6 +1063,11 @@ public class FrameMain extends JFrame
         textfieldDate.setText(birthday.getDay() + "/" + birthday.getMonth());
         textfieldLikes.setText(new Common().stringListToString(birthday.getLikes(), ", "));
         textfieldDislikes.setText(new Common().stringListToString(birthday.getDislikes(), ", "));
+    }
+    
+    private void updateTable()
+    {
+        ((DefaultTableModel) tableBirthdays.getModel()).setDataVector(Main.data.getData(), columns);
     }
     //Button Event Code" </editor-fold>
     //Methods </editor-fold>

@@ -41,8 +41,8 @@ public class Data
             String name = line.get(0);
             int day = Integer.parseInt(line.get(1));
             int month = Integer.parseInt(line.get(2));
-            List<String> likes = new Common().stringToStringList(line.get(3), "\\|");
-            List<String> dislikes = new Common().stringToStringList(line.get(4), "\\|");
+            List<String> likes = new Common().stringToStringList(line.get(3), "'");
+            List<String> dislikes = new Common().stringToStringList(line.get(4), "'");
             
             allBirthdays.addNode(new Birthday(name, day, month, likes, dislikes));
         }
@@ -224,10 +224,8 @@ public class Data
         }
         
         int index = 0;
-        int rowCount = birthdayTree.getSize();
         String[] row = new String[2];
-        String[][] rows = new String[rowCount][row.length];
-
+        String[][] rows = new String[birthdayTree.getSize()][row.length];
         
         for (BinaryTreeNode birthdayNode : (List<BinaryTreeNode>) birthdayTree.traverse())
         {

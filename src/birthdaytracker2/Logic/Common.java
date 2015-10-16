@@ -33,10 +33,11 @@ public class Common
             }
             else
             {
-                output = (separator + string);
+                output += (separator + string);
             }
         }
         
+        new Common().print(output);
         return output;
     }
     
@@ -79,6 +80,22 @@ public class Common
         }
         
         return output;
+    }
+    
+    public boolean validDate(int month, int day)
+    {
+        boolean valid = false;
+        int[] calendar = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        
+        if (month > 0 && month < 13)
+        {
+            if (day > 0 && day <= calendar[month - 1])
+            {
+                valid = true;
+            }
+        }
+        
+        return valid;
     }
     //Methods </editor-fold>
 }
