@@ -15,13 +15,13 @@ public class Common
     
     //<editor-fold defaultstate="collapsed" desc="Methods">
     public void print(Object line)
-    // Simplified print line.
+    // Simplified line print.
     {
         System.out.println(line.toString());
     }
     
     public String stringListToString(List<String> input, String separator)
-    // Concatenates a list of strings into a dsv string.
+    // Concatenates a list of strings into a delimiter seperated value string.
     {
         String output = "";
         
@@ -44,10 +44,12 @@ public class Common
     // Splits a dsv string into a list of strings at the seperators.
     {
         List<String> output = new ArrayList<>();
+        new Common().print(input);
         
         for (String string : input.split(separator))
         {
             output.add(string);
+            new Common().print(string);
         }
         
         return output;

@@ -1,6 +1,6 @@
-//<editor-fold defaultstate="collapsed" desc="Package and Imports">
 package birthdaytracker2.UI;
 import birthdaytracker2.Logic.BinaryTree.BinaryTreeNode;
+import birthdaytracker2.Logic.Common;
 import birthdaytracker2.Main;
 import birthdaytracker2.Models.Birthday;
 import java.awt.Color;
@@ -31,7 +31,6 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-//Package and Imports </editor-fold>
 
 public class FrameMain extends JFrame
 {
@@ -84,6 +83,7 @@ public class FrameMain extends JFrame
                     private JButton buttonSaveEntry;
                     private JButton buttonClear;
                     private JButton buttonBack;
+                    
     private final Border borderNone = BorderFactory.createEmptyBorder(); // Removes any border.
     private final Border borderBlack = new LineBorder(Color.black, 1); // Thin black line border.
     private final Color myRed = new Color(200, 0, 0);
@@ -214,12 +214,50 @@ public class FrameMain extends JFrame
     {
         panelEntry = new JPanel();
         panelEntry.setLayout(null);
-        panelEntry.setBackground(myGreen);
+        panelEntry.setBackground(Color.white);
         panelEntry.setSize(parent.getWidth() - 20, parent.getHeight() - panelInformation.getHeight() - 30);
         panelEntry.setLocation(10, panelInformation.getHeight() + 20);
         panelEntry.setVisible(false);
         
         parent.add(panelEntry);
+        
+        initialize_panelEntryDisplay(panelEntry);
+        initialize_panelEntryControls(panelEntry);
+    }
+    
+    private void initialize_panelEntryDisplay(Container parent)
+    {
+        panelEntryDisplay = new JPanel();
+        panelEntryDisplay.setLayout(null);
+        panelEntryDisplay.setBackground(Color.white);
+        panelEntryDisplay.setSize(parent.getWidth() - 110, parent.getHeight());
+        panelEntryDisplay.setLocation(0, 0);
+        
+        parent.add(panelEntryDisplay);
+        
+        initialize_labelName(panelEntryDisplay);
+        initialize_labelDate(panelEntryDisplay);
+        initialize_labelLikes(panelEntryDisplay);
+        initialize_labelDislikes(panelEntryDisplay);
+        initialize_textfieldName(panelEntryDisplay);
+        initialize_textfieldDate(panelEntryDisplay);
+        initialize_textfieldLikes(panelEntryDisplay);
+        initialize_textfieldDislikes(panelEntryDisplay);
+    }
+    
+    private void initialize_panelEntryControls(Container parent)
+    {
+        panelEntryControls = new JPanel();
+        panelEntryControls.setLayout(null);
+        panelEntryControls.setBackground(Color.white);
+        panelEntryControls.setSize(100, parent.getHeight());
+        panelEntryControls.setLocation(parent.getWidth() - 100, 0);
+        
+        parent.add(panelEntryControls);
+        
+        initialize_buttonClear(panelEntryControls);
+        initialize_buttonSaveEntry(panelEntryControls);
+        initialize_buttonBack(panelEntryControls);
     }
     
     private void initialize_scrollTable(Container parent)
@@ -286,6 +324,90 @@ public class FrameMain extends JFrame
         labelInformation.setText(informationText);
         
         parent.add(labelInformation);
+    }
+    
+    private void initialize_labelName(Container parent)
+    {
+        labelName = new JLabel();
+        labelName.setText("Name");
+        labelName.setOpaque(true);
+        labelName.setBackground(Color.black);
+        labelName.setForeground(Color.white);
+        labelName.setSize(parent.getWidth(), 20);
+        labelName.setHorizontalAlignment(SwingConstants.CENTER);
+        labelName.setLocation(0, 0);
+        parent.add(labelName);
+    }
+    
+    private void initialize_labelDate(Container parent)
+    {
+        labelDate = new JLabel();
+        labelDate.setText("Date");
+        labelDate.setHorizontalAlignment(SwingConstants.CENTER);
+        labelDate.setOpaque(true);
+        labelDate.setBackground(Color.black);
+        labelDate.setForeground(Color.white);
+        labelDate.setSize(parent.getWidth(), 20);
+        labelDate.setLocation(0, 50);
+        parent.add(labelDate);
+    }
+    
+    private void initialize_labelLikes(Container parent)
+    {
+        labelLikes = new JLabel();
+        labelLikes.setText("Likes");
+        labelLikes.setHorizontalAlignment(SwingConstants.CENTER);
+        labelLikes.setOpaque(true);
+        labelLikes.setBackground(Color.black);
+        labelLikes.setForeground(Color.white);
+        labelLikes.setSize(parent.getWidth(), 20);
+        labelLikes.setLocation(0, 100);
+        parent.add(labelLikes);
+    }
+    
+    private void initialize_labelDislikes(Container parent)
+    {
+        labelDislikes = new JLabel();
+        labelDislikes.setText("Dislikes");
+        labelDislikes.setHorizontalAlignment(SwingConstants.CENTER);
+        labelDislikes.setOpaque(true);
+        labelDislikes.setBackground(Color.black);
+        labelDislikes.setForeground(Color.white);
+        labelDislikes.setSize(parent.getWidth(), 20);
+        labelDislikes.setLocation(0, 150);
+        parent.add(labelDislikes);
+    }
+    
+    private void initialize_textfieldName(Container parent)
+    {
+        textfieldName = new JTextField();
+        textfieldName.setSize(parent.getWidth(), 20);
+        textfieldName.setLocation(0, 25);
+        parent.add(textfieldName);
+    }
+    
+    private void initialize_textfieldDate(Container parent)
+    {
+        textfieldDate = new JTextField();
+        textfieldDate.setSize(parent.getWidth(), 20);
+        textfieldDate.setLocation(0, 75);
+        parent.add(textfieldDate);
+    }
+    
+    private void initialize_textfieldLikes(Container parent)
+    {
+        textfieldLikes = new JTextField();
+        textfieldLikes.setSize(parent.getWidth(), 20);
+        textfieldLikes.setLocation(0, 125);
+        parent.add(textfieldLikes);
+    }
+    
+    private void initialize_textfieldDislikes(Container parent)
+    {
+        textfieldDislikes = new JTextField();
+        textfieldDislikes.setSize(parent.getWidth(), 20);
+        textfieldDislikes.setLocation(0, 175);
+        parent.add(textfieldDislikes);
     }
     
     private void initialize_textfieldSearch(Container parent)
@@ -386,7 +508,23 @@ public class FrameMain extends JFrame
             @Override
             public void actionPerformed(ActionEvent actionEVent)
             {
-                nameSearch();
+                String searchText = textfieldSearch.getText();
+                
+                if (searchText != null && !searchText.equals(""))
+                {
+                    if (tableBirthdays.getSelectedRowCount() > 0)
+                    {
+                        nameSearch(searchText);
+                    }
+                    else
+                    {
+                        informationFail("There is no data.", 3000);
+                    }
+                }
+                else
+                {
+                    informationFail("You must enter text to search for.", 3000);
+                }
             }
         });
         
@@ -405,7 +543,23 @@ public class FrameMain extends JFrame
             @Override
             public void actionPerformed(ActionEvent actionEvent)
             {
-                monthSearch();
+                String searchText = textfieldSearch.getText();
+                
+                if (searchText != null && !searchText.equals(""))
+                {
+                    if (tableBirthdays.getSelectedRowCount() > 0)
+                    {
+                        monthSearch(Integer.parseInt(searchText));
+                    }
+                    else
+                    {
+                        informationFail("There is no data.", 3000);
+                    }
+                }
+                else
+                {
+                    informationFail("You must enter text to search for.", 3000);
+                }
             }
         });
         
@@ -514,6 +668,60 @@ public class FrameMain extends JFrame
         parent.add(buttonHelpStop);
     }
     
+    private void initialize_buttonClear(Container parent)
+    {
+        buttonClear = new JButton("Clear");
+        setStyle_StandardButton(buttonClear);
+        buttonClear.setLocation(0, 0);
+        
+        buttonClear.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                clear();
+            }
+        });
+        
+        parent.add(buttonClear);
+    }
+    
+    private void initialize_buttonSaveEntry(Container parent)
+    {
+        buttonSaveEntry = new JButton("Save");
+        setStyle_StandardButton(buttonSaveEntry);
+        buttonSaveEntry.setLocation(0, 25);
+        
+        buttonSaveEntry.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                saveEntry();
+            }
+        });
+        
+        parent.add(buttonSaveEntry);
+    }
+    
+    private void initialize_buttonBack(Container parent)
+    {
+        buttonBack = new JButton("Back");
+        setStyle_StandardButton(buttonBack);
+        buttonBack.setLocation(parent.getWidth() - 100, parent.getHeight() - 20);
+        
+        buttonBack.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                back();
+            }
+        });
+        
+        parent.add(buttonBack);
+    }
+    
     private void initialize_buttonClose(Container parent)
     {
         buttonClose = new JButton("X");
@@ -525,7 +733,6 @@ public class FrameMain extends JFrame
         buttonClose.setSize(25, 25);
         buttonClose.setLocation(panelTitle.getWidth() - 25, 0);
         
-        // Click event code.
         buttonClose.addActionListener(new ActionListener()
         {
             @Override
@@ -558,11 +765,6 @@ public class FrameMain extends JFrame
     private void setInformation(String text)
     {
         labelInformation.setText(text);
-    }
-    
-    private String getDefaultInformation()
-    {
-        return "Information";
     }
     
     private void startHelp()
@@ -616,7 +818,7 @@ public class FrameMain extends JFrame
     private void stopHelp()
     {
         labelInformation.setBackground(Color.blue);
-        setInformation(getDefaultInformation());
+        setInformation(informationText);
         
         buttonHelpStop.setVisible(false);
         buttonHelpPrevious.setVisible(false);
@@ -633,12 +835,30 @@ public class FrameMain extends JFrame
     
     private void viewEntry()
     {
-        
+        if (tableBirthdays.getRowCount() > 0)
+        {
+            if (tableBirthdays.getSelectedRowCount() == 1)
+            {
+                int row = tableBirthdays.getSelectedRow();
+                String name = tableBirthdays.getValueAt(row, 0).toString();
+                Main.data.focusBirthday = (Birthday) Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), name).getItem(0);
+                fillTextFields(Main.data.focusBirthday);
+                changePanel();
+            }
+            else
+            {
+                informationFail("Select one row.", 2000);
+            }
+        }
+        else
+        {
+            informationFail("No data!", 2000);
+        }
     }
     
     private void newEntry()
     {
-        
+        changePanel();
     }
     
     private void deleteEntry(ActionListener actionListener)
@@ -665,14 +885,40 @@ public class FrameMain extends JFrame
         }
     }
     
-    private void nameSearch()
+    private void nameSearch(String name)
     {
+        List<BinaryTreeNode> output= new ArrayList<>();
         
+        BinaryTreeNode node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), name);
+        
+        while (node != null)
+        {
+            output.add(node);
+            node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), name);
+        }
+        
+        ((DefaultTableModel) tableBirthdays.getModel()).setDataVector(Main.data.getData(), columns);
+        
+        Main.data.currentBirthdays = Main.data.nameTree(Main.data.currentBirthdays.traverse());
     }
     
-    private void monthSearch()
+    private void monthSearch(int month)
     {
+        List<BinaryTreeNode> output= new ArrayList<>();
         
+        Main.data.currentBirthdays = Main.data.dateTree(Main.data.currentBirthdays.traverse());
+        
+        BinaryTreeNode node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), Integer.toString(month));
+        
+        while (node != null)
+        {
+            output.add(node);
+            node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), Integer.toString(month));
+        }
+        
+        ((DefaultTableModel) tableBirthdays.getModel()).setDataVector(Main.data.getData(), columns);// Nope, birthdaystogrid fucking bullshit do it
+        
+        Main.data.currentBirthdays = Main.data.nameTree(Main.data.currentBirthdays.traverse());
     }
     
     private void saveAll()
@@ -684,7 +930,52 @@ public class FrameMain extends JFrame
     {
         frameMain.remove(panelMain);
         initialize_panelMain(frameMain);
-        informationSuccess("Reset!", 2000);
+        informationSuccess("Program reset.", 2000);
+    }
+    
+    private void clear()
+    {
+        textfieldName.setText("");
+        textfieldDate.setText("");
+        textfieldLikes.setText("");
+        textfieldDislikes.setText("");
+    }
+    
+    private void saveEntry()
+    {
+        String name = textfieldName.getText().replace(" ", "");
+        String date = textfieldDate.getText().replace(" ", "");
+        List<String> likes = new Common().stringToStringList(textfieldLikes.getText(), ",");
+        List<String> dislikes = new Common().stringToStringList(textfieldDislikes.getText(), ",");
+        
+        if (name != null && !name.equals(""))
+        {
+            if (date != null && !date.equals(""))
+            {
+                String[] dateSplit = date.split("/");
+                int day = Integer.parseInt(dateSplit[0]);
+                int month = Integer.parseInt(dateSplit[1]);
+                
+                if (Main.data.focusBirthday == null)
+                {
+                    Main.data.saveBirthday(new Birthday(name, day, month, likes, dislikes));
+                }
+                else
+                {
+                    Main.data.updateBirthday(new Birthday(name, day, month, likes, dislikes));
+                }
+            }
+        }
+        else
+        {
+            informationFail("Entry required a name.", 2000);
+        }
+    }
+    
+    private void back()
+    {
+        changePanel();
+        Main.data.focusBirthday = null;
     }
     
     private void informationSuccess(String message, int time)
@@ -727,6 +1018,28 @@ public class FrameMain extends JFrame
         informationTimer = new Timer(0, taskPerformer);
         informationTimer.setInitialDelay(time);
         informationTimer.start();
+    }
+    
+    private void changePanel()
+    {
+        if (panelEntry.isVisible())
+        {
+            panelEntry.setVisible(false);
+            panelTable.setVisible(true);
+        }
+        else
+        {
+            panelTable.setVisible(false);
+            panelEntry.setVisible(true);
+        }
+    }
+    
+    private void fillTextFields(Birthday birthday)
+    {
+        textfieldName.setText(birthday.getName());
+        textfieldDate.setText(birthday.getDay() + "/" + birthday.getMonth());
+        textfieldLikes.setText(new Common().stringListToString(birthday.getLikes(), ", "));
+        textfieldDislikes.setText(new Common().stringListToString(birthday.getDislikes(), ", "));
     }
     //Button Event Code" </editor-fold>
     //Methods </editor-fold>

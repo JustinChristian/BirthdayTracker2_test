@@ -19,6 +19,7 @@ public class Data
     //Constructors </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Fields">
+    public Birthday focusBirthday = null;
     public DoublyLinkedList allBirthdays; // Contains ALL birthdays.
     public BinaryTree currentBirthdays; // Contains the current working set of birthdays.
     String file = System.getProperty("user.dir") + "\\dist\\" + "Birthdays.dsv";
@@ -40,8 +41,8 @@ public class Data
             String name = line.get(0);
             int day = Integer.parseInt(line.get(1));
             int month = Integer.parseInt(line.get(2));
-            List<String> likes = new Common().stringToStringList(line.get(3), ",");
-            List<String> dislikes = new Common().stringToStringList(line.get(4), ",");
+            List<String> likes = new Common().stringToStringList(line.get(3), "\\|");
+            List<String> dislikes = new Common().stringToStringList(line.get(4), "\\|");
             
             allBirthdays.addNode(new Birthday(name, day, month, likes, dislikes));
         }
@@ -52,6 +53,28 @@ public class Data
     public void updateCurrentBirthdays()
     {
         currentBirthdays = convertDoublyLinkedListToBinaryTree(allBirthdays);
+    }
+    
+    public void updateBirthday(Birthday birthday)
+    {
+        DoublyLinkedListNode target = allBirthdays.findNode(focusBirthday);
+        
+        if (target != null)
+        {
+            target.setItem(birthday);
+            updateCurrentBirthdays();
+            focusBirthday = null;
+        }
+        else
+        {
+            // TODO - Inform user of error.
+        }
+    }
+    
+    public void saveBirthday(Birthday birthday)
+    {
+        allBirthdays.addNode(birthday);
+        updateCurrentBirthdays();
     }
         
     public void saveBirthdays()
@@ -146,7 +169,7 @@ public class Data
         return output;
     }
     
-    private BinaryTree nameTree(List<Birthday> input)
+    public BinaryTree nameTree(List<Birthday> input)
     {
         BinaryTree output = null;
         
@@ -167,7 +190,7 @@ public class Data
         return output;
     }
     
-    private BinaryTree dateTree(List<Birthday> input)
+    public BinaryTree dateTree(List<Birthday> input)
     {
         BinaryTree output = null;
         

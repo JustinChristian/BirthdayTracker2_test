@@ -62,6 +62,7 @@ public class FileIO
             while ((line = bufferedReader.readLine()) != null)
             {
                 result.add(line);
+//                new Common().print(line);
             }
             
             bufferedReader.close();
