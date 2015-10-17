@@ -27,17 +27,7 @@ import javax.swing.JFrame;
 public class Main
 {
     public static void main(String[] args)
-    {
-        String[][] a = data.getData();
-        
-        for (int index = 0; index < a.length; index += 1)
-        {
-            for (int index2 = 0; index2 < a[0].length; index2 += 1)
-            {
-                new Common().print(a[index][index2]);
-            }
-        }
-        
+    {        
         EventQueue.invokeLater(new Runnable()
         {
             @Override

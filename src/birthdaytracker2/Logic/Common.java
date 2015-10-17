@@ -45,12 +45,10 @@ public class Common
     // Splits a dsv string into a list of strings at the seperators.
     {
         List<String> output = new ArrayList<>();
-        new Common().print(input);
         
         for (String string : input.split(separator))
         {
-            output.add(string);
-            new Common().print(string);
+            output.add(string.trim());
         }
         
         return output;

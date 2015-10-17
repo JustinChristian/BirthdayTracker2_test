@@ -82,7 +82,7 @@ public class Data
         List<String> birthdayLines = new ArrayList<>();
         DoublyLinkedListNode focusNode = allBirthdays.getStart().getRight();
         
-        for (int index = 0; index < allBirthdays.getSize() - 1; index += 1)
+        for (int index = 0; index < allBirthdays.getSize(); index += 1)
         {
             if (focusNode == allBirthdays.getEnd())
             {

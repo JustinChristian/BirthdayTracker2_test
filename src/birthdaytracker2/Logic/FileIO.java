@@ -69,7 +69,7 @@ public class FileIO
         }
         catch(Exception exception)
         {
-//            System.out.println(exception);
+            System.out.println(exception);
         }   
         
         return result;

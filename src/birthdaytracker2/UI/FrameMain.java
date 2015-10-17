@@ -862,7 +862,7 @@ public class FrameMain extends JFrame
         changePanel();
     }
     
-    private void deleteEntry(ActionListener actionListener)
+    private void deleteEntry(ActionListener actionListener) // delete deleting 2 entries?
     {
         if (tableBirthdays.getRowCount() > 0)
         {
@@ -873,7 +873,7 @@ public class FrameMain extends JFrame
                     Birthday birthday = (Birthday) Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), name).getItem(0);
                     Main.data.allBirthdays.deleteNode(birthday);
                     Main.data.updateCurrentBirthdays();
-                    ((DefaultTableModel) tableBirthdays.getModel()).setDataVector(Main.data.getData(), columns);
+                    updateTable();
             }
             else
             {
@@ -925,6 +925,7 @@ public class FrameMain extends JFrame
     private void saveAll()
     {
         Main.data.saveBirthdays();
+        informationSuccess("Data saved!", 2000);
     }
     
     private void reset()
@@ -967,26 +968,26 @@ public class FrameMain extends JFrame
                     informationFail("Invalid date.", 2000);
                 }
 
-                    if (new Common().validDate(day, month))
+                if (new Common().validDate(day, month))
+                {
+                     if (Main.data.focusBirthday == null)
                     {
-                         if (Main.data.focusBirthday == null)
-                        {
-                            Main.data.saveBirthday(new Birthday(name, day, month, likes, dislikes));
-                        }
-                        else
-                        {
-                            Main.data.updateBirthday(new Birthday(name, day, month, likes, dislikes));
-                        }
-
-                        updateTable();
-                        changePanel();
-                        clearTextFields();
-                        informationSuccess("Entry saved!", 2000);
+                        Main.data.saveBirthday(new Birthday(name, day, month, likes, dislikes));
                     }
                     else
                     {
-                        informationFail("Invalid date.", 2000);
+                        Main.data.updateBirthday(new Birthday(name, day, month, likes, dislikes));
                     }
+
+                    updateTable();
+                    changePanel();
+                    clearTextFields();
+                    informationSuccess("Entry saved!", 2000);
+                }
+                else
+                {
+                    informationFail("Invalid date.", 2000);
+                }
             }
         }
         else
