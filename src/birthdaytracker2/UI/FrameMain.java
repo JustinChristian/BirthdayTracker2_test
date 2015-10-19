@@ -1148,18 +1148,6 @@ public class FrameMain extends JFrame
         {
             setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
-
-        @Override
-        public void clearSelection()
-        {
-        
-        }
-
-        @Override
-        public void removeSelectionInterval(int index0, int index1) 
-        {
-        
-        }
     }
     
     private static class BorderLessTableCellRenderer extends DefaultTableCellRenderer 
