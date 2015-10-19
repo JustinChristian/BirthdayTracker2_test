@@ -1,3 +1,4 @@
+//<editor-fold defaultstate="collapsed" desc="Package and Imports">
 package birthdaytracker2.UI;
 import birthdaytracker2.Logic.BinaryTree.BinaryTreeNode;
 import birthdaytracker2.Logic.Common;
@@ -31,14 +32,13 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+//Package and Imports </editor-fold>
 
 public class FrameMain extends JFrame
 {
     //<editor-fold defaultstate="collapsed" desc="Constructors">
     public FrameMain()
-    // Constructor does nothing but activate the initalize method.
     {
-        Main.windows.add(frameMain);
         intialize_frameMain();
     }
     //Constructors </editor-fold>
@@ -66,6 +66,7 @@ public class FrameMain extends JFrame
                     private JButton buttonSaveAll; // Save all entries in the table to file.
                     private JButton buttonMonthSearch; // List birthdays in the target month.
                     private JButton buttonNameSearch; // List all entries with the target name.
+                    private JButton buttonBackTable;
                     private JButton buttonReset; // Reset JFrame to it's default state.
                 private JScrollPane scrollTable; // Contains the birthdays table and allows it to scroll.
                     private JTable tableBirthdays; // Displays a table of birthday details.
@@ -82,7 +83,7 @@ public class FrameMain extends JFrame
                 private JPanel panelEntryControls;
                     private JButton buttonSaveEntry;
                     private JButton buttonClear;
-                    private JButton buttonBack;
+                    private JButton buttonBackEntry;
                     
     private final Border borderNone = BorderFactory.createEmptyBorder(); // Removes any border.
     private final Border borderBlack = new LineBorder(Color.black, 1); // Thin black line border.
@@ -207,6 +208,7 @@ public class FrameMain extends JFrame
         initialize_textfieldSearch(panelTableControls);
         initialize_buttonNameSearch(panelTableControls);
         initialize_buttonMonthSearch(panelTableControls);
+        initialize_buttonBackTable(panelTableControls);
         initialize_buttonReset(panelTableControls);
     }
     
@@ -257,7 +259,7 @@ public class FrameMain extends JFrame
         
         initialize_buttonClear(panelEntryControls);
         initialize_buttonSaveEntry(panelEntryControls);
-        initialize_buttonBack(panelEntryControls);
+        initialize_buttonBackEntry(panelEntryControls);
     }
     
     private void initialize_scrollTable(Container parent)
@@ -508,23 +510,7 @@ public class FrameMain extends JFrame
             @Override
             public void actionPerformed(ActionEvent actionEVent)
             {
-                String searchText = textfieldSearch.getText();
-                
-                if (searchText != null && !searchText.equals(""))
-                {
-                    if (tableBirthdays.getSelectedRowCount() > 0)
-                    {
-                        nameSearch(searchText);
-                    }
-                    else
-                    {
-                        informationFail("There is no data.", 3000);
-                    }
-                }
-                else
-                {
-                    informationFail("You must enter text to search for.", 3000);
-                }
+                nameSearch();
             }
         });
         
@@ -543,27 +529,31 @@ public class FrameMain extends JFrame
             @Override
             public void actionPerformed(ActionEvent actionEvent)
             {
-                String searchText = textfieldSearch.getText();
-                
-                if (searchText != null && !searchText.equals(""))
-                {
-                    if (tableBirthdays.getSelectedRowCount() > 0)
-                    {
-                        monthSearch(Integer.parseInt(searchText));
-                    }
-                    else
-                    {
-                        informationFail("There is no data.", 3000);
-                    }
-                }
-                else
-                {
-                    informationFail("You must enter text to search for.", 3000);
-                }
+                monthSearch();
             }
         });
         
         parent.add(buttonMonthSearch);
+    }
+    
+    private void initialize_buttonBackTable(Container parent)
+    {
+        buttonBackTable = new JButton();
+        buttonBackTable.setText("Back");
+        setStyle_StandardButton(buttonBackTable);
+        buttonBackTable.setLocation(0, panelTableControls.getHeight() - 20);
+        buttonBackTable.setVisible(false);
+        
+        buttonBackTable.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                backTable();
+            }
+        });
+        
+        parent.add(buttonBackTable);
     }
     
     private void initialize_buttonReset(Container parent)
@@ -571,7 +561,7 @@ public class FrameMain extends JFrame
         buttonReset = new JButton();
         buttonReset.setText("Reset");
         setStyle_StandardButton(buttonReset);
-        buttonReset.setLocation(0, panelTableControls.getHeight() - 20);
+        buttonReset.setLocation(buttonBackTable.getLocation());
         
         buttonReset.addActionListener(new ActionListener()
         {
@@ -704,22 +694,22 @@ public class FrameMain extends JFrame
         parent.add(buttonSaveEntry);
     }
     
-    private void initialize_buttonBack(Container parent)
+    private void initialize_buttonBackEntry(Container parent)
     {
-        buttonBack = new JButton("Back");
-        setStyle_StandardButton(buttonBack);
-        buttonBack.setLocation(parent.getWidth() - 100, parent.getHeight() - 20);
+        buttonBackEntry = new JButton("Back");
+        setStyle_StandardButton(buttonBackEntry);
+        buttonBackEntry.setLocation(parent.getWidth() - 100, parent.getHeight() - 20);
         
-        buttonBack.addActionListener(new ActionListener()
+        buttonBackEntry.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent actionEvent)
             {
-                back();
+                backEntry();
             }
         });
         
-        parent.add(buttonBack);
+        parent.add(buttonBackEntry);
     }
     
     private void initialize_buttonClose(Container parent)
@@ -738,12 +728,14 @@ public class FrameMain extends JFrame
             @Override
             public void actionPerformed(ActionEvent actionEvent)
             {
-                Main.endProgram();
+                frameMain.dispose();
+                System.exit(0);
             }
         });
         
        parent.add(buttonClose);
     }
+    //Component Initializations </editor-fold>
     
     private void setStyle_StandardButton(JComponent target)
     {
@@ -825,9 +817,7 @@ public class FrameMain extends JFrame
         buttonHelpNext.setVisible(false);
         buttonHelp.setVisible(true);
     }
-    //Component Initializations </editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="Button Event Code">
     private void displayHelp()
     {
         labelInformation.setText(helpList.get(helpIndex));
@@ -886,40 +876,111 @@ public class FrameMain extends JFrame
         }
     }
     
-    private void nameSearch(String name)
+    private void nameSearch()
     {
-        List<BinaryTreeNode> output= new ArrayList<>();
-        
-        BinaryTreeNode node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), name);
-        
-        while (node != null)
+        String searchText = textfieldSearch.getText();
+                
+        if (!searchText.equals(""))
         {
-            output.add(node);
-            node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), name);
+            if (tableBirthdays.getRowCount() > 0)
+            {
+                List<Birthday> output= new ArrayList<>();
+                BinaryTreeNode node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), searchText);
+
+                for (Birthday birthday : (List<Birthday>) node.getItems())
+                {
+                    output.add(birthday);
+                }
+        
+                if (output.size() > 0)
+                {
+                    Main.data.currentBirthdays = Main.data.nameTree(output);
+                    updateTable();
+                    buttonReset.setVisible(false);
+                    buttonBackTable.setVisible(true);
+                    informationSuccess(output.size() + " entries found.", 2000);
+                }
+                else
+                {
+                    informationFail("No entries found.", 2000);
+                }
+            }
+            else
+            {
+                informationFail("There is no data.", 2000);
+            }
         }
-        
-        updateTable();
-        
-        Main.data.currentBirthdays = Main.data.nameTree(Main.data.currentBirthdays.traverse());
+        else
+        {
+            informationFail("You must enter text to search for.", 2000);
+        }
     }
     
-    private void monthSearch(int month)
-    {
-        List<BinaryTreeNode> output= new ArrayList<>();
+    private void monthSearch()
+    {       
+        boolean valid = false;
         
-        Main.data.currentBirthdays = Main.data.dateTree(Main.data.currentBirthdays.traverse());
+       try
+       {
+           int month = Integer.parseInt(textfieldSearch.getText());
+           
+           if (new Common().validDate(1, month))
+           {
+               valid = true;
+           }
+       }
+       catch (Exception exception)
+       {
+           
+       }
         
-        BinaryTreeNode node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), Integer.toString(month));
-        
-        while (node != null)
+                
+        if (valid)
         {
-            output.add(node);
-            node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), Integer.toString(month));
+            if (tableBirthdays.getRowCount() > 0)
+            {
+                List<Birthday> output= new ArrayList<>();
+
+                for (BinaryTreeNode node : (List<BinaryTreeNode>) Main.data.currentBirthdays.traverse())
+                {
+                    for (Birthday birthday : (List<Birthday>) node.getItems())
+                    {
+                        output.add(birthday);
+                    }
+                }
+                
+                Main.data.currentBirthdays = Main.data.dateTree(output);
+                output = new ArrayList<>();
+                BinaryTreeNode node = Main.data.currentBirthdays.findNode(Main.data.currentBirthdays.getRoot(), textfieldSearch.getText());
+                
+                for (Birthday birthday : (List<Birthday>) node.getItems())
+                {
+                    output.add(birthday);
+                }
+                
+        
+                if (output.size() > 0)
+                {
+                    Main.data.currentBirthdays = Main.data.nameTree(output);
+                    updateTable();
+                    buttonReset.setVisible(false);
+                    buttonBackTable.setVisible(true);
+                    informationSuccess(output.size() + " entries found.", 2000);
+                }
+                else
+                {
+                    informationFail("No entries found.", 2000);
+                }
+            }
+            else
+            {
+                informationFail("There is no data.", 2000);
+            }
         }
-        
-        updateTable();
-        
-        Main.data.currentBirthdays = Main.data.nameTree(Main.data.currentBirthdays.traverse());
+        else
+        {
+            informationFail("You must enter 1-12.", 2000);
+        }
     }
     
     private void saveAll()
@@ -996,10 +1057,18 @@ public class FrameMain extends JFrame
         }
     }
     
-    private void back()
+    private void backEntry()
     {
         changePanel();
         Main.data.focusBirthday = null;
+    }
+    
+    private void backTable()
+    {
+        Main.data.updateCurrentBirthdays();
+        updateTable();
+        buttonBackTable.setVisible(false);
+        buttonReset.setVisible(true);
     }
     
     private void informationSuccess(String message, int time)
@@ -1070,7 +1139,6 @@ public class FrameMain extends JFrame
     {
         ((DefaultTableModel) tableBirthdays.getModel()).setDataVector(Main.data.getData(), columns);
     }
-    //Button Event Code" </editor-fold>
     //Methods </editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Private Classes">
